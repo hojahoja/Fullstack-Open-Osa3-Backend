@@ -2,8 +2,10 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 
-app.use(morgan("tiny"));
+morgan.token("body", (req, res) => (req.method === "POST" ? JSON.stringify(req.body) : undefined));
+
 app.use(express.json());
+app.use(morgan(":method :url :status :res[content-length] - :response-time ms :body"));
 
 let persons = [
   {
@@ -43,8 +45,7 @@ let persons = [
   },
 ];
 
-const generateId = () =>
-  (new Date().getTime() * Math.random()).toString().replace(".", "");
+const generateId = () => (new Date().getTime() * Math.random()).toString().replace(".", "");
 
 app.get("/api/persons", (req, res) => {
   res.json(persons);
@@ -61,9 +62,7 @@ app.get("/api/info", (req, res) => {
   const date = new Date();
   const dateString = `${date.toDateString()} ${date.toTimeString()}`;
 
-  res.send(
-    `<p>The phonebook has ${persons.length} entries</p><p>${dateString}</p>`
-  );
+  res.send(`<p>The phonebook has ${persons.length} entries</p><p>${dateString}</p>`);
 });
 
 app.delete("/api/persons/:id", (req, res) => {
