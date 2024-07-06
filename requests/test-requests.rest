@@ -8,3 +8,7 @@ GET http://localhost:3001/api/persons/{{id}}
 ###
 
 GET http://localhost:3001/api/info
+
+###
+
+DELETE http://localhost:3001/api/persons/{{id}}

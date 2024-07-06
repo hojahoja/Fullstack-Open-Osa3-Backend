@@ -5,29 +5,29 @@ app.use(express.json());
 
 let persons = [
   {
+    id: "1",
     name: "Jordan Rudess",
     number: "+1-617-5681235",
-    id: "1",
   },
   {
+    id: "2",
     name: "Robert Fripp",
     number: "+44-020-2133453",
-    id: "2",
   },
   {
+    id: "3",
     name: "Keith Emerson",
     number: "+44-020-1236542",
-    id: "3",
   },
   {
+    id: "4",
     name: "Neil Peart",
     number: "+1-310-2145831",
-    id: "4",
   },
   {
+    id: "5",
     name: "Tosin Abasi",
     number: "+1-802-5324008",
-    id: "5",
   },
   {
     id: "6",
@@ -59,6 +59,13 @@ app.get("/api/info", (req, res) => {
   res.send(
     `<p>The phonebook has ${persons.length} entries</p><p>${dateString}</p>`
   );
+});
+
+app.delete("/api/persons/:id", (req, res) => {
+  const id = req.params.id;
+  persons = persons.filter((p) => p.id !== id);
+
+  res.status(204).end();
 });
 
 const PORT = 3001;
