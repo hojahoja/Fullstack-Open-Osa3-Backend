@@ -7,35 +7,35 @@ let persons = [
   {
     name: "Jordan Rudess",
     number: "+1-617-5681235",
-    id: "0",
+    id: "1",
   },
   {
     name: "Robert Fripp",
     number: "+44-020-2133453",
-    id: "1",
+    id: "2",
   },
   {
     name: "Keith Emerson",
     number: "+44-020-1236542",
-    id: "2",
+    id: "3",
   },
   {
     name: "Neil Peart",
     number: "+1-310-2145831",
-    id: "3",
+    id: "4",
   },
   {
     name: "Tosin Abasi",
     number: "+1-802-5324008",
-    id: "4",
+    id: "5",
   },
   {
-    id: "e36f",
+    id: "6",
     name: "Heikki Silvennoinen",
     number: "050-101012",
   },
   {
-    id: "38ec",
+    id: "7",
     name: "Allan Holdsworth",
     number: "+1-442-4321243",
   },
@@ -43,6 +43,13 @@ let persons = [
 
 app.get("/api/persons", (req, res) => {
   res.json(persons);
+});
+
+app.get("/api/persons/:id", (req, res) => {
+  const id = req.params.id;
+  const person = persons.find((p) => p.id === id);
+
+  person ? res.json(person) : res.status(404).end();
 });
 
 app.get("/api/info", (req, res) => {

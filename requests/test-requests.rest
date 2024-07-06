@@ -1,4 +1,9 @@
+@id = 6
 GET http://localhost:3001/api/persons
+
+###
+
+GET http://localhost:3001/api/persons/{{id}}
 
 ###
 
