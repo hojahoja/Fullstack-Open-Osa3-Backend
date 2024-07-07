@@ -1,6 +1,7 @@
 @hostname = localhost
 @port = 3001
-@host = {{hostname}}:{{port}}
+#@host = {{hostname}}:{{port}}
+@host = puhelinluettelo-fso.onrender.com
 @resource = api/persons
 @id = 6
 GET http://{{host}}/{{resource}}/
