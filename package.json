@@ -4,6 +4,7 @@
   "description": "fullstack exercise",
   "main": "index.js",
   "scripts": {
+    "build:ui": "rm -rf dist && cd ../fullstack-open/osa2/puhelinluettelo/ && npm run build && cp -r dist ../../../fullstack-osa3-backend/",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,10 +20,10 @@
   },
   "homepage": "https://github.com/hojahoja/Fullstack-Open-Osa3-Backend#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "morgan": "^1.10.0",
     "nodemon": "^3.1.4"
   }
 }
