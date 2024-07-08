@@ -1,6 +1,6 @@
 {
   "name": "phonebook-backend",
-  "version": "3.1.11",
+  "version": "3.1.12",
   "description": "fullstack exercise",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,7 @@
   "homepage": "https://github.com/hojahoja/Fullstack-Open-Osa3-Backend#readme",
   "dependencies": {
     "express": "^4.19.2",
+    "mongoose": "^8.4.5",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
