@@ -1,23 +1,26 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 
-if (process.argv.length < 3) {
-  console.log("No Password, no fun!");
-  process.exit(1);
-}
+//if (process.argv.length < 3) {
+//  console.log("No Password, no fun!");
+//  process.exit(1);
+//}
+//
+//const password = process.argv[2];
 
-const password = process.argv[2];
-
-const url = `mongodb+srv://hojahoja:${password}@fullstackopen0.vyhgoab.mongodb.net/puhelinluettelo?retryWrites=true&w=majority&appName=FullstackOpen0`;
+//Changed to use env variable instead of typing password in the terminal.
+//The Functionality required in exercize 3.12 is still accessible in commit: "3.12: tietokanta komentoriviltä"
+const url = process.env.MONGODB_URI;
 
 mongoose.set("strictQuery", false);
 mongoose.connect(url);
 
-const noteSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
   name: String,
   number: String,
 });
 
-const Person = mongoose.model("Person", noteSchema);
+const Person = mongoose.model("Person", personSchema);
 
 const createPerson = (name, number) => {
   if (name && number) {
@@ -41,9 +44,9 @@ const listPeople = () => {
   });
 };
 
-if (process.argv.length == 3) {
+if (process.argv.length == 2) {
   listPeople();
-} else if (process.argv.length == 5) {
+} else if (process.argv.length == 4) {
   createPerson(process.argv[3], process.argv[4]);
 } else {
   console.log("Incorrect Argument");

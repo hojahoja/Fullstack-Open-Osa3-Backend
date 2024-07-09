@@ -1,6 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
+const Person = require("./models/person");
 
 morgan.token("body", (req, res) => (req.method === "POST" ? JSON.stringify(req.body) : undefined));
 
@@ -46,17 +48,18 @@ let persons = [
   },
 ];
 
-const generateId = () => (new Date().getTime() * Math.random()).toString().replace(".", "");
+//const generateId = () => (new Date().getTime() * Math.random()).toString().replace(".", "");
 
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
+  Person.find({}).then((foundPeople) => {
+    res.json(foundPeople);
+  });
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  const id = req.params.id;
-  const person = persons.find((p) => p.id === id);
-
-  person ? res.json(person) : res.status(404).end();
+  Person.findById(req.params.id)
+    .then((person) => res.json(person))
+    .catch((error) => res.status(404).end());
 });
 
 app.get("/api/info", (req, res) => {
@@ -78,19 +81,17 @@ app.post("/api/persons", (req, res) => {
 
   if (!body.name || !body.number) {
     return res.status(400).json({ error: "Missing name or number" });
-  } else if (persons.some((p) => p.name === body.name)) {
-    return res.status(400).json({ error: "Name already in the book" });
   }
 
-  const person = {
-    id: generateId(),
+  const person = new Person({
     name: body.name,
     number: body.number,
-  };
+  });
 
-  persons = persons.concat(person);
-  res.json(person);
+  person.save().then((savedPerson) => {
+    res.json(savedPerson);
+  });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
