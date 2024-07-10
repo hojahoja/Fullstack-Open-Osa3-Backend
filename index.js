@@ -10,48 +10,6 @@ app.use(express.static("dist"));
 app.use(express.json());
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :body"));
 
-/*
-let persons = [
-  {
-    id: "1",
-    name: "Jordan Rudess",
-    number: "+1-617-5681235",
-  },
-  {
-    id: "2",
-    name: "Robert Fripp",
-    number: "+44-020-2133453",
-  },
-  {
-    id: "3",
-    name: "Keith Emerson",
-    number: "+44-020-1236542",
-  },
-  {
-    id: "4",
-    name: "Neil Peart",
-    number: "+1-310-2145831",
-  },
-  {
-    id: "5",
-    name: "Tosin Abasi",
-    number: "+1-802-5324008",
-  },
-  {
-    id: "6",
-    name: "Heikki Silvennoinen",
-    number: "050-101012",
-  },
-  {
-    id: "7",
-    name: "Allan Holdsworth",
-    number: "+1-442-4321243",
-  },
-];
-*/
-
-//const generateId = () => (new Date().getTime() * Math.random()).toString().replace(".", "");
-
 app.get("/api/persons", (req, res) => {
   Person.find({}).then((foundPeople) => {
     res.json(foundPeople);
@@ -80,16 +38,8 @@ app.delete("/api/persons/:id", (req, res, next) => {
 });
 
 app.post("/api/persons", (req, res, next) => {
-  const body = req.body;
-
-  if (!body.name || !body.number) {
-    return res.status(400).json({ error: "Missing name or number" });
-  }
-
-  const person = new Person({
-    name: body.name,
-    number: body.number,
-  });
+  const { name, number } = req.body;
+  const person = new Person({ name, number });
 
   person
     .save()
@@ -100,12 +50,8 @@ app.post("/api/persons", (req, res, next) => {
 });
 
 app.put("/api/persons/:id", (req, res, next) => {
-  const body = req.body;
-
-  const person = {
-    name: body.name,
-    number: body.number,
-  };
+  const { name, number } = req.body;
+  const person = { name, number };
 
   Person.findByIdAndUpdate(req.params.id, person, { new: true })
     .then((updatedPerson) => res.json(updatedPerson))
@@ -121,6 +67,8 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === "CastError") {
     return res.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return res.status(400).json({ error: error.message });
   }
 
   next(error);
