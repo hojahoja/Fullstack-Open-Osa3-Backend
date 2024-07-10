@@ -10,6 +10,7 @@ app.use(express.static("dist"));
 app.use(express.json());
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :body"));
 
+/*
 let persons = [
   {
     id: "1",
@@ -47,6 +48,7 @@ let persons = [
     number: "+1-442-4321243",
   },
 ];
+*/
 
 //const generateId = () => (new Date().getTime() * Math.random()).toString().replace(".", "");
 
@@ -66,7 +68,9 @@ app.get("/api/info", (req, res) => {
   const date = new Date();
   const dateString = `${date.toDateString()} ${date.toTimeString()}`;
 
-  res.send(`<p>The phonebook has ${persons.length} entries</p><p>${dateString}</p>`);
+  Person.find({}).then((foundPeople) =>
+    res.send(`<p>The phonebook has ${foundPeople.length} entries</p><p>${dateString}</p>`)
+  );
 });
 
 app.delete("/api/persons/:id", (req, res, next) => {
@@ -92,6 +96,19 @@ app.post("/api/persons", (req, res, next) => {
     .then((savedPerson) => {
       res.json(savedPerson);
     })
+    .catch((error) => next(error));
+});
+
+app.put("/api/persons/:id", (req, res, next) => {
+  const body = req.body;
+
+  const person = {
+    name: body.name,
+    number: body.number,
+  };
+
+  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+    .then((updatedPerson) => res.json(updatedPerson))
     .catch((error) => next(error));
 });
 

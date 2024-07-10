@@ -3,7 +3,7 @@
 @host = {{hostname}}:{{port}}
 #@host = puhelinluettelo-fso.onrender.com
 @resource = api/persons
-@id = 6
+@id = placeholder
 GET http://{{host}}/{{resource}}/
 ###
 GET http://{{host}}/{{resource}}/{{id}}
@@ -20,4 +20,12 @@ Content-Type: application/json
 {
   "name": "Setä Samuli",
   "number": "911"
+}
+###
+PUT http://{{host}}/{{resource}}/{{id}}/
+Content-Type: application/json
+
+{
+  "name": "Setä Samuli",
+  "number": "7-4-1776"
 }
