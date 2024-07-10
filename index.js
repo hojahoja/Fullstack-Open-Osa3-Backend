@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const app = express();
 const Person = require("./models/person");
 
-morgan.token("body", (req, res) => (req.method === "POST" ? JSON.stringify(req.body) : undefined));
+morgan.token("body", (req) => (req.method === "POST" ? JSON.stringify(req.body) : undefined));
 
 app.use(express.static("dist"));
 app.use(express.json());
@@ -33,7 +33,7 @@ app.get("/api/info", (req, res) => {
 
 app.delete("/api/persons/:id", (req, res, next) => {
   Person.findByIdAndDelete(req.params.id)
-    .then((result) => res.status(204).end())
+    .then(() => res.status(204).end())
     .catch((error) => next(error));
 });
 

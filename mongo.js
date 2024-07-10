@@ -25,7 +25,7 @@ const Person = mongoose.model("Person", personSchema);
 const createPerson = (name, number) => {
   if (name && number) {
     const person = new Person({ name, number });
-    person.save().then((result) => {
+    person.save().then(() => {
       console.log(`added ${person.name} number ${person.number} to phonebook`);
       mongoose.connection.close();
     });
@@ -44,9 +44,9 @@ const listPeople = () => {
   });
 };
 
-if (process.argv.length == 2) {
+if (process.argv.length === 2) {
   listPeople();
-} else if (process.argv.length == 4) {
+} else if (process.argv.length === 4) {
   createPerson(process.argv[3], process.argv[4]);
 } else {
   console.log("Incorrect Argument");
