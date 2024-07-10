@@ -19,7 +19,7 @@ Content-Type: application/json
 
 {
   "name": "Setä Samuli",
-  "number": "911"
+  "number": "91-11111111"
 }
 ###
 PUT http://{{host}}/{{resource}}/{{id}}/
